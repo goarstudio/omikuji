@@ -3,42 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <title>Omikuji Translation Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       background-color: #000;
+      margin: 0;
+      font-family: sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
-      margin: 0;
-      font-family: sans-serif;
+      overflow: hidden;
     }
 
     #start-button {
-      padding: 15px 40px;
-      font-size: 20px;
+      padding: 20px 50px;
+      font-size: 24px;
       color: white;
-      background: linear-gradient(90deg, #ffcc00, #ff66cc);
+      background: linear-gradient(90deg, #ff0000, #ff5555);
       border: none;
-      border-radius: 40px;
-      box-shadow: 0 0 20px #ffcc00, 0 0 40px #ff66cc;
+      border-radius: 50px;
+      box-shadow: 0 0 20px #ff0000, 0 0 40px #ff4444;
       cursor: pointer;
       animation: pulse 2s infinite;
+      z-index: 10;
     }
 
     @keyframes pulse {
-      0% { box-shadow: 0 0 20px #ffcc00, 0 0 40px #ff66cc; }
-      50% { box-shadow: 0 0 40px #ffcc00, 0 0 60px #ff66cc; }
-      100% { box-shadow: 0 0 20px #ffcc00, 0 0 40px #ff66cc; }
+      0% { box-shadow: 0 0 20px #ff0000, 0 0 40px #ff4444; }
+      50% { box-shadow: 0 0 40px #ff0000, 0 0 60px #ff4444; }
+      100% { box-shadow: 0 0 20px #ff0000, 0 0 40px #ff4444; }
     }
 
     video {
       display: none;
-      max-width: 100%;
-      height: auto;
-      margin-top: 20px;
-      border-radius: 20px;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 1;
     }
   </style>
 </head>
@@ -46,7 +51,7 @@
 
   <button id="start-button">Start</button>
 
-  <video id="myVideo" controls>
+  <video id="myVideo" playsinline>
     <source src="omikuji.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
@@ -55,10 +60,19 @@
     const button = document.getElementById("start-button");
     const video = document.getElementById("myVideo");
 
-    button.addEventListener("click", function() {
-      button.style.display = "none"; // Hide the button
-      video.style.display = "block"; // Show the video
-      video.play(); // Start the video
+    button.addEventListener("click", function () {
+      button.style.display = "none";
+      video.style.display = "block";
+      video.play();
+
+      // Try to request fullscreen
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+      } else if (video.msRequestFullscreen) {
+        video.msRequestFullscreen();
+      }
     });
   </script>
 
